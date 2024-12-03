@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from fire.views import HomePageView, ChartView, PieCountbySeverity, FireTruckDeleteView, FireTruckUpdateView, FireTruckCreateView, FireTruckListView, FireFightersDeleteView, FireFightersUpdateView, FireFightersCreateView, FireFightersListView, FireStationDeleteView, LineCountbyMonth, FireStationUpdateView, MultilineIncidentTop3Country, multipleBarbySeverity, FireStationListView, FireStationCreateView
+from fire.views import HomePageView, ChartView, PieCountbySeverity, WeatherConditionsDeleteView, WeatherConditionsUpdateView, WeatherConditionsCreateView, WeatherConditionsListView, IncidentDeleteView, IncidentUpdateView, LocationsDeleteView, LocationsUpdateView, LocationsCreateView, LocationsListView, IncidentCreateView,  IncidentListView,  FireTruckDeleteView, FireTruckUpdateView, FireTruckCreateView, FireTruckListView, FireFightersDeleteView, FireFightersUpdateView, FireFightersCreateView, FireFightersListView, FireStationDeleteView, LineCountbyMonth, FireStationUpdateView, MultilineIncidentTop3Country, multipleBarbySeverity, FireStationListView, FireStationCreateView
 from fire import views
 
 urlpatterns = [
@@ -22,7 +22,20 @@ urlpatterns = [
     path('firefightersstations/<pk>/delete/', FireFightersDeleteView.as_view(), name='fire-fighters-delete'),
     path('firetruck/', FireTruckListView.as_view(), name='fire-truck'),
     path('firetruck/add/', FireTruckCreateView.as_view(), name='fire-truck-add'),
-    path('firetruck/add/<pk>/', FireTruckUpdateView.as_view(), name='fire-truck-update'),
-    path('firetruck/add/<pk>/delete/', FireTruckDeleteView.as_view(), name='fire-truck-delete'),
+    path('firetruck/<pk>/', FireTruckUpdateView.as_view(), name='fire-truck-update'),
+    path('firetruck/<pk>/delete/', FireTruckDeleteView.as_view(), name='fire-truck-delete'),
+    path('location/', LocationsListView.as_view(), name='location'),
+    path('location/add/', LocationsCreateView.as_view(), name='location-add'),
+    path('location/<pk>/', LocationsUpdateView.as_view(), name='location-update'),
+    path('location/<pk>/delete/', LocationsDeleteView.as_view(), name='location-delete'),
+    path('incident/', IncidentListView.as_view(), name='incident'),
+    path('incident/add/', IncidentCreateView.as_view(), name='incident-add'),
+    path('incident/<pk>/', IncidentUpdateView.as_view(), name='incident-update'),
+    path('incident/<pk>/delete/', IncidentDeleteView.as_view(), name='incident-delete'),
+    path('weather/', WeatherConditionsListView.as_view(), name='weather'),
+    path('weather/add/', WeatherConditionsCreateView.as_view(), name='weather-add'),
+    path('weather/<pk>/', WeatherConditionsUpdateView.as_view(), name='weather-update'),
+    path('weather/<pk>/delete/', WeatherConditionsDeleteView.as_view(), name='weather-delete'),
+    
 ]
 

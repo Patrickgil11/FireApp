@@ -1,12 +1,12 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck
+from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck, WeatherConditions
 from django.db import connection
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 from datetime import datetime
-from .forms import FireStationForm, FireFightersForm, FireTruckForm
+from .forms import FireStationForm, FireFightersForm, FireTruckForm, IncidentForm, LocationsForm, WeatherConditionsForm
 from django.urls import reverse_lazy
 
 
@@ -277,3 +277,111 @@ class FireTruckDeleteView(DeleteView):
     model = FireTruck
     template_name = 'fire_truck_delete.html'
     success_url = reverse_lazy('fire-truck')
+
+class LocationsListView(ListView):
+    model = Locations
+    context_object_name = 'locations'
+    template_name = 'location_list.html'
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") is not None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(name__icontains=query) |
+                Q(latitude__icontains=query) |
+                Q(longitude__icontains=query) |
+                Q(address__icontains=query)|
+                Q(city__icontains=query)|
+                Q(country__icontains=query)
+            )
+        return qs.order_by('id')
+
+class LocationsCreateView(CreateView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'location_add.html'
+    success_url = reverse_lazy('location')
+
+class LocationsUpdateView(UpdateView):
+    model = Locations
+    form_class = LocationsForm
+    template_name = 'location_update.html'
+    success_url = reverse_lazy('location')
+
+class LocationsDeleteView(DeleteView):
+    model = Locations
+    template_name = 'location_delete.html'
+    success_url = reverse_lazy('location')
+
+class IncidentListView(ListView):
+    model = Incident
+    context_object_name = 'incident'
+    template_name = 'incident_list.html'
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") is not None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(location__icontains=query) |
+                Q(date_time__icontains=query) |
+                Q(severity_level__icontains=query) |
+                Q(description__icontains=query)
+            )
+        return qs.order_by('id')
+
+class IncidentCreateView(CreateView):
+    model = Incident
+    form_class = IncidentForm
+    template_name = 'incident_add.html'
+    success_url = reverse_lazy('incident')
+
+class IncidentUpdateView(UpdateView):
+    model = Incident
+    form_class = IncidentForm
+    template_name = 'incident_update.html'
+    success_url = reverse_lazy('incident')
+
+class IncidentDeleteView(DeleteView):
+    model = Incident
+    template_name = 'incident_delete.html'
+    success_url = reverse_lazy('incident')
+
+class WeatherConditionsListView(ListView):
+    model = WeatherConditions
+    context_object_name = 'weather'
+    template_name = 'weather_list.html'
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") is not None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(incident__icontains=query) |
+                Q(temperature__icontains=query) |
+                Q(humidity__icontains=query) |
+                Q(wind_speed__icontains=query)|
+                Q(weather_description__icontains=query)
+            )
+        return qs.order_by('id')
+
+class WeatherConditionsCreateView(CreateView):
+    model = WeatherConditions
+    form_class = WeatherConditionsForm
+    template_name = 'weather_add.html'
+    success_url = reverse_lazy('weather')
+
+class WeatherConditionsUpdateView(UpdateView):
+    model = WeatherConditions
+    form_class = WeatherConditionsForm
+    template_name = 'weather_update.html'
+    success_url = reverse_lazy('weather')
+
+class WeatherConditionsDeleteView(DeleteView):
+    model = WeatherConditions
+    template_name = 'weather_delete.html'
+    success_url = reverse_lazy('weather')

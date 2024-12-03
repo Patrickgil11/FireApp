@@ -12,12 +12,14 @@ class BaseModel(models.Model):
 class Locations(BaseModel):
     name = models.CharField(max_length=150)
     latitude = models.DecimalField(
-        max_digits=22, decimal_places=16, null=True, blank=True)
+        max_digits=22, decimal_places=2, null=True, blank=True)
     longitude = models.DecimalField(
-        max_digits=22, decimal_places=16, null=True, blank=True)
+        max_digits=22, decimal_places=2, null=True, blank=True)
     address = models.CharField(max_length=150)
     city = models.CharField(max_length=150)  # can be in separate table
     country = models.CharField(max_length=150)  # can be in separate table
+    def __str__(self):
+        return self.address
 
 
 class Incident(BaseModel):
@@ -30,6 +32,9 @@ class Incident(BaseModel):
     date_time = models.DateTimeField(blank=True, null=True)
     severity_level = models.CharField(max_length=45, choices=SEVERITY_CHOICES)
     description = models.CharField(max_length=250)
+    def __str__(self):
+        return f"{self.severity_level}, {self.location}"
+    
 
 
 class FireStation(BaseModel):
@@ -42,7 +47,7 @@ class FireStation(BaseModel):
     city = models.CharField(max_length=150)  # can be in separate table
     country = models.CharField(max_length=150)  # can be in separate table
     def __str__(self):
-            return self.name
+        return self.name
 
 
 class Firefighters(BaseModel):
@@ -73,3 +78,4 @@ class WeatherConditions(BaseModel):
     humidity = models.DecimalField(max_digits=10, decimal_places=2)
     wind_speed = models.DecimalField(max_digits=10, decimal_places=2)
     weather_description = models.CharField(max_length=150)
+
