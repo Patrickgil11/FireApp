@@ -1,12 +1,13 @@
 from django.shortcuts import render
-from django.views.generic.list import ListView
-from fire.models import Locations, Incident, FireStation
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from fire.models import Locations, Incident, FireStation, Firefighters, FireTruck
 from django.db import connection
 from django.http import JsonResponse
 from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 from datetime import datetime
-
+from .forms import FireStationForm, FireFightersForm, FireTruckForm
+from django.urls import reverse_lazy
 
 
 class HomePageView(ListView):
@@ -163,5 +164,116 @@ def map_station(request):
 
     return render(request, 'map_station.html', context)
 
+class FireStationListView(ListView):
+    model = FireStation
+    context_object_name = 'stations'
+    template_name = 'fire_station_list.html'
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") is not None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(name__icontains=query) |
+                Q(address__icontains=query) |
+                Q(city__icontains=query) |
+                Q(country__icontains=query)
+            )
+        return qs.order_by('id')
+    
+class FireStationCreateView(CreateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'fire_station_add.html'
+    success_url = reverse_lazy('fire-station')
 
 
+class FireStationUpdateView(UpdateView):
+    model = FireStation
+    form_class = FireStationForm
+    template_name = 'fire_station_update.html'
+    success_url = reverse_lazy('fire-station')
+
+class FireStationDeleteView(DeleteView):
+    model = FireStation
+    template_name = 'fire_station_delete.html'
+    success_url = reverse_lazy('fire-station')
+
+class FireFightersListView(ListView):
+    model = Firefighters
+    context_object_name = 'firefighters'
+    template_name = 'fire_fighters_list.html'
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") is not None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(name__icontains=query) |
+                Q(rank__icontains=query) |
+                Q(experience_level__icontains=query) |
+                Q(station__icontains=query)
+            )
+        return qs.order_by('id')
+    
+class FireFightersCreateView(CreateView):
+    model = Firefighters
+    form_class = FireFightersForm
+    template_name = 'fire_fighters_add.html'
+    success_url = reverse_lazy('fire-fighters')
+
+
+    
+class FireFightersCreateView(CreateView):
+    model = Firefighters
+    form_class = FireFightersForm
+    template_name = 'fire_station_add.html'
+    success_url = reverse_lazy('fire-station')
+
+class FireFightersUpdateView(UpdateView):
+    model = Firefighters
+    form_class = FireFightersForm
+    template_name = 'fire_fighters_update.html'
+    success_url = reverse_lazy('fire-fighters')
+
+class FireFightersDeleteView(DeleteView):
+    model = Firefighters
+    template_name = 'fire_fighters_delete.html'
+    success_url = reverse_lazy('fire-fighters')
+
+class FireTruckListView(ListView):
+    model = FireTruck
+    context_object_name = 'fire-truck'
+    template_name = 'fire_truck_list.html'
+    paginate_by = 5
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        if self.request.GET.get("q") is not None:
+            query = self.request.GET.get('q')
+            qs = qs.filter(
+                Q(truck_number__icontains=query) |
+                Q(models__icontains=query) |
+                Q(capacity__icontains=query) |
+                Q(station__icontains=query)
+            )
+        return qs.order_by('id')
+
+class FireTruckCreateView(CreateView):
+    model = FireTruck
+    form_class = FireTruckForm
+    template_name = 'fire_truck_add.html'
+    success_url = reverse_lazy('fire-truck')
+
+class FireTruckUpdateView(UpdateView):
+    model = FireTruck
+    form_class = FireTruckForm
+    template_name = 'fire_truck_update.html'
+    success_url = reverse_lazy('fire-truck')
+
+class FireTruckDeleteView(DeleteView):
+    model = FireTruck
+    template_name = 'fire_truck_delete.html'
+    success_url = reverse_lazy('fire-truck')
