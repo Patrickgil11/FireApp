@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path
 
 from fire.views import HomePageView, ChartView, PieCountbySeverity, WeatherConditionsDeleteView, WeatherConditionsUpdateView, WeatherConditionsCreateView, WeatherConditionsListView, IncidentDeleteView, IncidentUpdateView, LocationsDeleteView, LocationsUpdateView, LocationsCreateView, LocationsListView, IncidentCreateView,  IncidentListView,  FireTruckDeleteView, FireTruckUpdateView, FireTruckCreateView, FireTruckListView, FireFightersDeleteView, FireFightersUpdateView, FireFightersCreateView, FireFightersListView, FireStationDeleteView, LineCountbyMonth, FireStationUpdateView, MultilineIncidentTop3Country, multipleBarbySeverity, FireStationListView, FireStationCreateView
+#from fire.views import HomePageView,ChartView,PieCountbySeverity,LineCountbyMonth, MultilineIncidentTop3Country, multipleBarbySeverity,FireStationList, FireStationCreateView,FireStationUpdateView,FireStationDeleteView,FireFighterList,FireFighterCreateView,FireFighterUpdateView,FireFighterDeleteView, FireTruckList,FireTruckCreateView, FireTruckUpdateView,FireTruckDeleteView,LocationList,LocationCreateView,LocationUpdateView,LocationDeleteView,WeatherConditionList,WeatherConditionCreateView,WeatherConditionUpdateView,WeatherConditionDeleteView,IncidentList,IncidentCreateView,IncidentUpdateView,IncidentDeleteView
 from fire import views
 
 urlpatterns = [
@@ -37,5 +38,9 @@ urlpatterns = [
     path('weather/<pk>/', WeatherConditionsUpdateView.as_view(), name='weather-update'),
     path('weather/<pk>/delete/', WeatherConditionsDeleteView.as_view(), name='weather-delete'),
     
+
+
 ]
+    
+
 
