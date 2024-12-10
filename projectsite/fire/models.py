@@ -42,6 +42,7 @@ class Incident(BaseModel):
 
 class FireStation(BaseModel):
     name = models.CharField(max_length=150)
+    date_time = models.DateTimeField(default=now) 
     latitude = models.DecimalField(
         max_digits=22, decimal_places=2, null=True, blank=True)
     longitude = models.DecimalField(

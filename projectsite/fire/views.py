@@ -297,7 +297,6 @@ class FireFightersDeleteView(DeleteView):
     success_url = reverse_lazy('fire-fighters')
 
     def form_valid(self, form):
-        fireFighters_name = form.instance.name
         messages.success(self.request, f"Fire Fighter Deleted successfully.")
         return super().form_valid(form)
 
